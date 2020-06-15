@@ -213,3 +213,36 @@ export default {
 ```
 
 当getter的属性名与组件内data的属性名冲突时？
+
+## mapMutations
+使用 mapMutations 辅助函数将组件中的 methods 映射为 store.commit 调用
+```javascript
+import { mapMutations } from 'vuex'
+ 
+export default {
+  methods: {
+    ...mapMutations([
+      'increment' // 映射 this.increment() 为 this.$store.commit('increment')
+    ]),
+    ...mapMutations({
+      add: 'increment' // 映射 this.add() 为 this.$store.commit('increment')
+    })
+  }
+}
+```
+## mapActions
+```javascript
+import { mapActions } from 'vuex'
+ 
+export default {
+  //..
+  methods: {
+    ...mapActions([
+      'incrementN' //映射 this.incrementN() 为 this.$store.dispatch('incrementN')
+    ]),
+    ...mapActions({
+      add: 'incrementN' //映射 this.add() 为 this.$store.dispatch('incrementN')
+    })
+  }
+}
+```

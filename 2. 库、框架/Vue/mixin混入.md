@@ -1,4 +1,52 @@
 # 基础使用
+mixin.js
+```javascript
+// 1.定义 mixin 混入对象
+import Vue from 'vue'
+var com =  Vue.extend({
+    template:'<h3>这是 mixin 中创建的组件</h3>'
+}) 
+Vue.component('com',com)
+
+export default {
+  data() {
+    return {
+      name: '--mixin name--',
+      obj:{
+          title:"minxin-title",
+          desc:"minxin-desc"
+      }
+    }
+  },
+  components:{
+    mixinCom:com
+  }
+  ,
+  methods:{
+    change(){
+      this.name = "new Mixin"
+    }
+  }
+}
+```
+组件中：
+```javascript
+<template>
+  <div id="app">
+    <mixinCom></mixinCom>
+    <button @click="change">改变name值</button>
+    <p>{{mixinAll}}</p>
+  </div>
+</template>
+
+<script>
+import Vue from "vue"
+import mixin from "@/mixin/mixin"
+export default {
+  mixins:[mixin]
+}
+</script>
+```
 # 选项合并
 当组件和混入对象含有同名选项时，这些选项将以恰当的方式进行“合并”。
 
@@ -8,15 +56,37 @@
 
 值为对象的选项，例如 methods、components 和 directives，将被合并为同一个对象。两个对象键名冲突时，取组件对象的键值对。
 # 全局混入
-一旦使用全局混入，它将影响每一个之后创建的 Vue 实例(包括第三方组件)，谨慎使用。推荐将其作为插件发布，以避免重复应用混入。
+使用全局混入会影响每一个之后创建的 Vue 实例(包括第三方组件)，谨慎使用。推荐将其作为插件发布，以避免重复应用混入。
 ```
 Vue.mixin({
-  created: function () {
-    var myOption = this.$options.myOption
-    if (myOption) {
-      console.log(myOption)
+  data(){
+    return{
+      mixinAll:"全局mixin"
     }
   }
 })
 ```
 # 自定义选项合并策略
+```javascript
+Vue.config.optionMergeStrategies.myOption = function(toVal,fromVal){
+  return xxx
+}
+```
+组件内：
+```javascript
+export default {
+  myOption: '组件里的myOption选项'
+  created(){
+    console.log(this.$options.myOption)
+  }
+}
+```
+# 问题
+```javascript
+Vue.config.optionMergeStrategies.myOption = function(toVal,fromVal){
+  return toVal  //undefined
+  return fromVal  //组件里的myOption选项
+  return toVal + "-" + fromVal  // undefined - mixin 中的 myOption 选项 - undefined - 组件里的myOption选项
+}
+```
+这个自定义选项合并策略的方法参数代表什么？

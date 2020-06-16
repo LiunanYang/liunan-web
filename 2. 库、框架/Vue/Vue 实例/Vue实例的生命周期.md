@@ -91,3 +91,7 @@
 - watch 对具体某个数据变化做统一处理 
 - nextTick 是对某个数据的某一次变化进行处理
 
+## 问题
+- 页面初次渲染触发的钩子函数？
+
+beforeCreate、created、beforeMount、mounted

@@ -1,4 +1,7 @@
-### 使用 webpack-dev-server 这个工具，来实现自动打包编译的功能
+# webpack-dev-server 
+
+实现自动打包编译的功能
+
 1. 运行 npm i webpack-dev-server -D 把这个工具安装到项目的本地开发依赖
 2. 安装完毕后，这个工具的用法和webpack 命令的用法，完全一致
 3. 由于我们是在项目中，本地安装的 webpack-dev-serevr ,所以，无法把它当作脚本命令，在 powershell 终端中直接运行；（只有那些安装到全局 -g 的工具，才能在终端中正常执行）

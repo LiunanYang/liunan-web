@@ -54,7 +54,7 @@ export default {
 
 同名钩子函数将合并为一个数组，因此都将被调用。混入对象的钩子将在组件自身钩子之前调用。
 
-值为对象的选项，例如 methods、components 和 directives，将被合并为同一个对象。两个对象键名冲突时，取组件对象的键值对。
+值为对象的选项，例如 methods、components 和 directives，将被合并为同一个对象。两个对象键名冲突时，取组件对象的键值对s
 # 全局混入
 使用全局混入会影响每一个之后创建的 Vue 实例(包括第三方组件)，谨慎使用。推荐将其作为插件发布，以避免重复应用混入。
 ```
@@ -89,4 +89,4 @@ Vue.config.optionMergeStrategies.myOption = function(toVal,fromVal){
   return toVal + "-" + fromVal  // undefined - mixin 中的 myOption 选项 - undefined - 组件里的myOption选项
 }
 ```
-这个自定义选项合并策略的方法参数代表什么？
+这个自定义选项合并策略的方法参数是什么？

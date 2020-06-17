@@ -1,20 +1,28 @@
-# 使用过渡类名实现动画
+<!-- TOC -->
+
+- [使用默认过渡类名实现动画](#使用默认过渡类名实现动画)
+- [自定义动画过渡类名](#自定义动画过渡类名)
+- [使用第三方类实现动画](#使用第三方类实现动画)
+- [钩子函数实现半场动画](#钩子函数实现半场动画)
+- [使用transition-group元素实现列表动画](#使用transition-group元素实现列表动画)
+
+<!-- /TOC -->
+
+# 使用默认过渡类名实现动画
 
 [案例：点击按钮，让h3显示，再点击，让h3隐藏]
-- 使用 transition 元素，把需要被动画控制的元素，包裹起来
-    - transition 元素，是Vue官方提供的
-```
-<!-- 自定义两组样式 来控制 transition 内部的元素实现动画 -->
+- 使用 Vue 官方提供的 transition 元素，把需要被动画控制的元素，包裹起来
+- 定义样式
+    - v-enter: 进入之前，元素的起始状态，此时还没开始进入 */
+    - v-leave-to: 是动画离开之后，离开的终止状态，此时元素动画已经结束
+    - v-enter-active: 入场动画时间段
+    - v-leave-active: 出场动画时间段
+```HTML
 <style>
-    /* v-enter : 进入之前，元素的起始状态，此时还没哟开始进入 */
-    /* v-leave-to: 是动画离开之后，离开的终止状态，此时元素动画已经结束 */
     .v-enter,
     .v-leave-to{
         opacity:0;
-        transform: translateX(150px);
     }
-    /* v-enter-active 入场动画时间段 */
-    /* v-leave-active 出场动画时间段 */
     .v-enter-active,
     .v-leave-active{
         transition:all 0.8s ease;
@@ -28,7 +36,6 @@
     </transition>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script>
     var app = new Vue({
         el:"#app",
@@ -38,8 +45,8 @@
     })
 </script>
 ```
-# 修改v-前缀
-```
+# 自定义动画过渡类名
+```html
 <style>
     .my-enter,
     .my-leave-to {
@@ -54,53 +61,52 @@
 </style>
 
 <div id="app">
-    <input type="button" value="toggle2" @click="flag2=!flag2">
+    <input type="button" value="toggle" @click="flag=!flag">
     <transition name="my">
-        <h6 v-if="flag2">这是 h6</h6>
+        <h6 v-if="flag">这是 h6</h6>
     </transition>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script>
     var app = new Vue({
         el:"#app",
         data:{
-            flag2:false
+            flag:false
         }
     })
 </script>
 ```
 
 # 使用第三方类实现动画
-- 引入 animated.css,不需要自己定义样式
-```
+- 引入 animated.css ,不需要自己定义样式
+```html
 <transition enter-active-class="animated bounceIn" leave-active-class="animated bounceOut">
     <h3 v-if="flag">这是 h3</h3>
 </transition>
 
 ```
-或者，将animated类写在里面
-```
+或者，将 animated 类写在里面
+```html
 <transition enter-active-class="bounceIn" leave-active-class="bounceOut" >
     <h3 v-if="flag" class="animated">这是 h3</h3>
 </transition>
 ```
 **还可以使用 :duration 设置入场和离场时候的动画时常**
 1. 统一设置
-```
+```html
 <transition enter-active-class="bounceIn" leave-active-class="bounceOut" :duration="200">
     <h3 v-if="flag" class="animated">这是 h3</h3>
 </transition>
 ```
 2. 分开设置(使用对象的方法)
-```
+```html
 <transition enter-active-class="animated bounceIn" leave-active-class="animated bounceOut" :duration="{enter:200,leave:400}">
     <h3 v-if="flag">这是 h3</h3>
 </transition>
 ```
 
 # 钩子函数实现半场动画
-```
+```html
 <style>
     .ball{
         width: 20px;
@@ -151,9 +157,9 @@
     })
 </script>
 ```
-> 注意：**动画钩子函数的第一个参数 el**，表示要执行动画的那个DOM元素，是个**原生的 JS DOM 对象**
+> **动画钩子函数的第一个参数 el**，表示要执行动画的那个DOM元素，是个**原生的 JS DOM 对象**
 > 
-> 大家可以认为 el 是通过 document.getElementById("") 方式获取到的原生 JS 对象
+> 可以认为 el 是通过 document.getElementById("") 方式获取到的原生 JS 对象
             
 > 当只使用 JavaScript过渡的时候，在 **enter** 和 **leave** 中 ，回调函数 **done** 是必须的。否则，他们会被同步调用，过渡会立即完成。
 
@@ -162,7 +168,7 @@
 - 在实现列表过渡的时候，如果需要过渡的元素，是通过 v-for 循环渲染出来的,不能使用 transition 包裹，需要使用 transitionGroup 
 - 如果要为v-for循环创建的元素设置动画，必须为每个元素 设置 ：key属性 
 
-```
+```html
 <style>
     li{
         border: 1px dashed #999;
@@ -245,7 +251,7 @@
 </script>
 ```
 此时 li 的外层是 span
-```
+```html
 <ul>
     <span>
         <li>
@@ -258,7 +264,7 @@
 解决：删除ul标签，在 transition-group 中加入 **tag="ul"**
 > 通过为 transition-group 元素，设置 tag 属性，指定transition-group渲染为指定的元素，如果不指定，则默认渲染为 span 标签 
 
-```
+```html
 <transition-group appear tag="ul">
     <li v-for="(item,i) in list" :key="item.id" @click="del(i)">
         {{ item.id }} --- {{ item.name }}

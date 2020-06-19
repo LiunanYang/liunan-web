@@ -31,7 +31,7 @@ new Vue({
 
 ## state
 - 共享状态/变量 
-- 通过 `this.$store.state` 来访问vuex中定义的变量
+- 通过 `this.$store.state` 来访问vuex中定义的变 量
 ## mutation
 - 只能通过 `this.$store.commit` 提交 mulation 的方式更改 store 状态
 - 方法参数第一个是 state，通过 state 获取 store 中的变量
